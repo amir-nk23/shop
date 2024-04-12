@@ -1,0 +1,7 @@
+{
+    "Posts": true,
+    "Admin": true,
+    "Model": true,
+    "Product": true,
+    "Setting": true
+}
