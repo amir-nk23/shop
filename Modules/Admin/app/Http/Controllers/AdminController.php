@@ -23,10 +23,16 @@ class AdminController extends Controller
 //    });
 
 
-        $admins = Admin::query()->select(['name','email','mobile'])->get();
+        try {
+            $admins = Admin::query()->select(['name','email','mobile'])->get();
+            return \response()->success(':)',compact('admins'));
 
+        }catch(\Exception $e){
 
-        return \response()->success(':)',compact('admins'));
+            return \response()->error('سایت با مشکل مواجه شده است');
+
+        }
+
 
     }
 
@@ -40,15 +46,23 @@ class AdminController extends Controller
     public function store(Request $request)
     {
 
-       $admin = Admin::query()->create([
+        try {
 
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'mobile'=>$request->mobile,
-            'password'=>$request->password,
-        ]);
+            $admin = Admin::query()->create([
 
-        return \response()->success(':)',compact('admin'));
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'mobile'=>$request->mobile,
+                'password'=>$request->password,
+            ]);
+
+            return \response()->success(':)',compact('admin'));
+
+        }catch (\Exception $e){
+
+            return \response()->error('سایت با مشکل مواجه شده است');
+
+        }
     }
 
     /**
@@ -68,15 +82,23 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $admin=Admin::find($id);
 
-        $admin->update([
+        try {
+            $admin=Admin::find($id);
 
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'mobile'=>$request->mobile,
-            'password'=>$request->password,
-        ]);
+            $admin->update([
+
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'mobile'=>$request->mobile,
+                'password'=>$request->password,
+            ]);
+        }catch (\Exception $e){
+
+            return \response()->error('سایت با مشکل مواجه شده است');
+
+        }
+
     }
 
     /**

@@ -16,8 +16,14 @@ class SettingController extends Controller
      */
     public function general(){
 
-        $generals = Setting::query()->where('group','general')->get();
-        return \response()->success(':>',compact('generals'));
+        try {
+            $generals = Setting::query()->where('group','general')->get();
+            return \response()->success(':>',compact('generals'));
+        }catch (\Exception $e){
+
+            return \response()->error('سایت در بخش نمایش اطلاعات پایه مشکل مواجه شده است');
+
+        }
 
     }
 
@@ -25,8 +31,16 @@ class SettingController extends Controller
 
     public function social(){
 
-        $social = Setting::query()->where('group','social')->get();
-        return \response()->success(':>',compact('social'));
+        try {
+
+            $social = Setting::query()->where('group','social')->get();
+            return \response()->success(':>',compact('social'));
+
+        }catch (\Exception $e){
+
+            return \response()->error('سایت در بخش نمایش اطلاعات پایه مشکل مواجه شده است');
+        }
+
 
 
     }
@@ -34,31 +48,40 @@ class SettingController extends Controller
     public function update(Request $request)
     {
 
-        $input = $request->except('_token','_method');
+        try {
 
-        foreach ($input as $name => $value){
+            $input = $request->except('_token','_method');
 
-            if ($setting = Setting::where('name',$name)->first()){
+            foreach ($input as $name => $value){
 
-                if ($setting->type=='img'&& $request->file($name)->isValid()){
+                if ($setting = Setting::where('name',$name)->first()){
 
-                    if ($setting->value){
+                    if ($setting->type=='img'&& $request->file($name)->isValid()){
 
-                        Storage::disk('public')->delete($setting->value);
+                        if ($setting->value){
+
+                            Storage::disk('public')->delete($setting->value);
+
+                        }
+
+                        $value =   Storage::disk('public')->put('/setting',$request->img);
 
                     }
 
-                    $value =   Storage::disk('public')->put('/setting',$request->img);
+                    $setting->update(['value'=>$value]);
 
                 }
 
-                $setting->update(['value'=>$value]);
-
             }
+
+            return \response()->success(':>');
+
+        }catch (\Exception $e){
+
+            return \response()->error('سایت با مشکل مواجه شده است');
 
         }
 
-        return \response()->success(':>');
 
     }
 
