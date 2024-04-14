@@ -17,8 +17,6 @@ class SliderController extends Controller
     {
 
         $sliders = Slider::query()->select(['id','title','link'])->get();
-        dd($sliders);
-
         return \response()->success(':>',compact('sliders'));
 
     }
