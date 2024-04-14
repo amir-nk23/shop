@@ -3,5 +3,6 @@
     "Admin": true,
     "Model": true,
     "Product": true,
-    "Setting": true
+    "Setting": true,
+    "Slider": true
 }
