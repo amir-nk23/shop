@@ -4,17 +4,14 @@ namespace Modules\Slider\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Modules\Slider\Database\Factories\SliderFactory;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Slider extends Model  implements HasMedia
 {
     use InteractsWithMedia;
-    use HasFactory ;
 
     /**
      * The attributes that are mass assignable.
@@ -64,11 +61,10 @@ class Slider extends Model  implements HasMedia
 
     }
 
-    protected function image()
+    protected function image(): Attribute
     {
-        $media = $this->getFirstMedia('slider_images');
 
-        dd('hi');
+        $media = $this->getFirstMedia('slider_images');
         return Attribute::make(
 
             get: fn () => [
