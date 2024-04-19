@@ -14,7 +14,7 @@ class SpecificationController extends Controller
      */
     public function index()
     {
-        return view('specification::index');
+
     }
 
     /**

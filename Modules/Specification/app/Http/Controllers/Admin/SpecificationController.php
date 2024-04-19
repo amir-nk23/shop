@@ -17,7 +17,8 @@ class SpecificationController extends Controller
     public function index()
     {
 
-        $specification = Specification::query()->where('status',1)->select(['id','name']);
+
+        $specification = Specification::query()->where('status',1)->select(['id','name'])->get();
 
         return \response()->success(':>',compact('specification'));
     }
@@ -36,7 +37,7 @@ class SpecificationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
 
         $specification = Specification::query()->create([
@@ -60,12 +61,15 @@ class SpecificationController extends Controller
      */
     public function update(Request $request, Specification $specification)
     {
+
         $specification->update([
             'name'=>$request->name,
             'status'=>$request->status
         ]);
 
         $specification->categories()->sync($request->category_id);
+
+        return \response()->success('>',compact('specification'));
     }
 
     /**

@@ -12,12 +12,20 @@ class CategoryController extends Controller
 {
 
 
+    public function index(){
+
+        $category = Category::query()->where('status',1)->select('id','name')->with('recursiveChildren')->get();
+
+               return \response()->success(':>',compact('category'));
+    }
+
 
     public function store(Request $request)
     {
 
        $category = Category::query()->create([
 
+           'name'=>$request->name,
             'parent_id'=>$request->parent_id,
             'featured'=>$request->featured,
             'status'=>$request->status,
@@ -43,8 +51,9 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
 
-        $category->update([
 
+        $category->update([
+            'name'=>$request->name,
             'parent_id'=>$request->parent_id,
             'featured'=>$request->featured,
             'status'=>$request->status,

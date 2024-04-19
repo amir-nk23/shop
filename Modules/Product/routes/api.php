@@ -15,6 +15,6 @@ use Modules\Product\Http\Controllers\ProductController;
  *
 */
 
-Route::prefix('category')->group( function () {
+Route::group([],function () {
     Route::resource('category', CategoryController::class);
 });

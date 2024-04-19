@@ -14,6 +14,6 @@ use Modules\Specification\Http\Controllers\SpecificationController;
  *
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('specification', SpecificationController::class)->names('specification');
+Route::group([],function () {
+    Route::resource('specification', \Modules\Specification\Http\Controllers\Admin\SpecificationController::class);
 });
