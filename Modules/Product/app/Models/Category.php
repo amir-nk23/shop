@@ -5,6 +5,7 @@ namespace Modules\Product\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Product\Database\Factories\CategoryFactory;
+use Modules\Specification\Models\Specification;
 
 class Category extends Model
 {
@@ -36,6 +37,13 @@ class Category extends Model
     public function children(){
 
         return $this->belongsTo(Category::class,'parent_id');
+
+    }
+
+    public function specifications()
+    {
+
+        return $this->belongsToMany(Specification::class,'category_specification');
 
     }
 }

@@ -4,5 +4,6 @@
     "Model": true,
     "Product": true,
     "Setting": true,
-    "Slider": true
+    "Slider": true,
+    "Specification": true
 }

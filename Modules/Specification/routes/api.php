@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Product\Http\Controllers\Admin\CategoryController;
-use Modules\Product\Http\Controllers\ProductController;
+use Modules\Specification\Http\Controllers\SpecificationController;
 
 /*
  *--------------------------------------------------------------------------
@@ -15,6 +14,6 @@ use Modules\Product\Http\Controllers\ProductController;
  *
 */
 
-Route::prefix('category')->group( function () {
-    Route::resource('category', CategoryController::class);
+Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+    Route::apiResource('specification', SpecificationController::class)->names('specification');
 });
