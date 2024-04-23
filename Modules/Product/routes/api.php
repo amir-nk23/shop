@@ -15,6 +15,8 @@ use Modules\Product\Http\Controllers\ProductController;
  *
 */
 
-Route::group([],function () {
-    Route::resource('category', CategoryController::class);
-});
+
+
+Route::resource('product',\Modules\Product\Http\Controllers\Admin\ProductController::class);
+
+Route::resource('category',CategoryController::class);
