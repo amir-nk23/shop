@@ -14,13 +14,12 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'image'=>'mimes:jpeg,jpg,png,gif|required|max:10000',
-            'title'=>'required|max:20',
+            'title'=>'required|max:191|string',
             'category_id'=>'required|exists:categories,id',
-            'description'=>'required|text',
-            'status'=>'required|boolean',
+            'description'=>'required|string',
+            'status'=>'required|in:available,unavailable,draft',
             'discount_type'=> 'in:percent,flat',
-            'discount'=>'numeric'
-
+            'discount'=>'integer|nullable'
         ];
     }
 
@@ -30,5 +29,10 @@ class ProductStoreRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function passedValidation()
+    {
+
     }
 }

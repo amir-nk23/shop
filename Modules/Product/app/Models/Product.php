@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\UploadedFile;
 use Modules\Specification\Models\Specification;
+use Modules\Store\Models\Store;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Sluggable\SlugOptions;
@@ -44,9 +45,15 @@ class Product extends Model implements HasMedia
         return $this->belongsTo(Category::class);
     }
 
-    public function specification(){
+    public function store(){
 
-        return $this->belongsToMany(Specification::class)->withPivot(['value']);
+        $this->hasOne(Store::class);
+
+    }
+
+    public function specifications(){
+
+        return $this->belongsToMany(Specification::class,'product_specification')->withPivot(['value']);
 
     }
 

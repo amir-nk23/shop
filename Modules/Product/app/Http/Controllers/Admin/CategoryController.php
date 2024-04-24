@@ -31,6 +31,7 @@ class CategoryController extends Controller
             'status'=>$request->status,
         ]);
 
+       $category->specifications()->attach($request->spec_id);
 
         return \response()->success(':>',compact('category'));
 
