@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Store\Http\Requests\StoreStoreRequest;
+use Modules\Store\Models\Store;
+use Modules\Store\Models\StoreTransaction;
+use function Sodium\increment;
 
 class StoreController extends Controller
 {
@@ -14,45 +18,65 @@ class StoreController extends Controller
      */
     public function index()
     {
-        return view('store::index');
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('store::create');
+        $store = Store::query()->select('balance')->with(['product','storetransactions'])->get();
+
+        return \response(':>',compact('store'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreStoreRequest $request)
     {
-        //
+
+
+        $store = Store::query()->where('id',$request->store_id);
+
+        if ($request->type = 'increment'){
+
+         $storeTA =   StoreTransaction::query()->create([
+
+                'store_id'=>$request->store_id,
+                'order_id'=>null,
+                'type'=>$request->type,
+                'quantity'=>$request->quantity,
+                'description'=>$request->description
+
+            ]);
+
+            $store->increment('balance',$request->quantity);
+
+        }else{
+
+            $storeTA =  StoreTransaction::query()->create([
+
+                'store_id'=>$request->store_id,
+                'order_id'=>null,
+                'type'=>$request->type,
+                'quantity'=>$request->quantity,
+                'description'=>$request->description
+
+            ]);
+
+            $store->decrement('balance',$request->quantity);
+        }
+
+
+        return \response()->success('عملیات ثبت تغییرات انبار با موفقیت انجام شد',compact('storeTA'));
+
     }
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('store::show');
-    }
+    public function show(Store $store){
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('store::edit');
+        dd($store);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $id)
     {
         //
     }

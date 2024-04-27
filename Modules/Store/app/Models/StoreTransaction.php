@@ -13,10 +13,21 @@ class StoreTransaction extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'store_id',
+        'order_id',
+        'type',
+        'quantity',
+        'description',
+    ];
 
-    protected static function newFactory(): StoreTransactionFactory
-    {
-        //return StoreTransactionFactory::new();
+    protected $table = 'storetransactions';
+
+
+    public function store(){
+
+        return $this->belongsTo(Store::class);
+
     }
+
 }

@@ -25,4 +25,11 @@ class Store extends Model
         $this->belongsTo(Product::class);
 
     }
+
+    public function storetransactions(){
+
+        return $this->hasMany(StoreTransaction::class,'store_id');
+
+
+    }
 }

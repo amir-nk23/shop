@@ -6,5 +6,7 @@
     "Setting": true,
     "Slider": true,
     "Specification": true,
-    "Store": true
+    "Store": true,
+    "Auth": true,
+    "Customer": true
 }

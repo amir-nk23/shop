@@ -16,8 +16,8 @@ use Modules\Store\Http\Controllers\StoreController;
 
 
 
-Route::prefix('store')->group(function (){
+Route::group([],function (){
 
-    Route::resource('store',StoreController::class);
+    Route::resource('store',\Modules\Store\Http\Controllers\Admin\StoreController::class);
 
 });

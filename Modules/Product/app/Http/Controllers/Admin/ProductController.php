@@ -48,10 +48,13 @@ class ProductController extends Controller
        ]);
 
         $i = 0;
-        for($i; $i<count($request->spec_id);$i++){
+        if (count($request->spec_id)!=0 && count($request->value)!=0){
+            for($i; $i<count($request->spec_id);$i++){
 
-            $product->specifications()->attach($request->spec_id[$i],['value'=>$request->value[$i]]);
+                $product->specifications()->attach($request->spec_id[$i],['value'=>$request->value[$i]]);
+            }
         }
+
 
 
         return \response()->success('عملیات با موفقیت انجام شد',compact('product'));

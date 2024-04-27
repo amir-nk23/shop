@@ -6,14 +6,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-http": "*",
         "laravel/framework": "^11.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "nesbot/carbon": "^3.3",
         "nwidart/laravel-modules": "^11.0",
         "spatie/laravel-medialibrary": "^11.4",
         "spatie/laravel-permission": "^6.4",
-        "spatie/laravel-sluggable": "^3.6",
-      "ext-http": "*"
-   },
+        "spatie/laravel-sluggable": "^3.6"
+    },
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "laravel/pint": "^1.13",

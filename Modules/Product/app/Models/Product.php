@@ -58,6 +58,7 @@ class Product extends Model implements HasMedia
     }
 
 
+
     //start media-library
     protected $with = ['media'];
 
@@ -113,8 +114,8 @@ class Product extends Model implements HasMedia
 
         }
 
-
         foreach ($request->file('images') as $image){
+
 
             $this->addGallery($image);
 
