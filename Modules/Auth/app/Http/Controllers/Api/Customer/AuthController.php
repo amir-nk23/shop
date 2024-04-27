@@ -17,13 +17,6 @@ use Modules\Customer\Models\Customer;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('auth::index');
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -32,9 +25,9 @@ class AuthController extends Controller
     {
 
         $is_register = null;
+        $mobile = $request->mobile;
        $validate = Validator::make($request->all(),[
                'mobile'=>'required|digits:11',
-
        ]);
 
         if ($validate->fails()){
@@ -43,12 +36,12 @@ class AuthController extends Controller
 
             if(Customer::where('mobile',$request->mobile)->first()){
 
-                $is_register = 'yes';
+                $isRegister = 'yes';
 
             }else{
 
-               $is_register = 'no';
-
+               $isRegister = 'no';
+//                $this->sendToken($request);
 
             }
 
@@ -56,7 +49,7 @@ class AuthController extends Controller
         }
 
 
-        return \response()->success('عملیات با شناسایی کاربر با موفقیت انجام شد',compact('is_register'));
+        return \response()->success('عملیات با شناسایی کاربر با موفقیت انجام شد',compact('isRegister','mobile'));
     }
 
     public function sendToken(Request $request){
@@ -172,42 +165,40 @@ class AuthController extends Controller
         }else{
 
 
-            if (Auth::guard('customer-api')->attempt(['mobile'=>$request->mobile,'password'=>$request->password])){
-                dd('hi');
-                $request->session()->regenerate();
 
-            }else {
+          if ($customer = Customer::query()->where('mobile',$request->input('mobile'))->first()){
 
-                return back()->withErrors([
-                    'validate' => 'اطلاعات وارد شده صحیح نمیباشد',
-                ])->onlyInput('mobile');
-            }
+              $password = bcrypt($request->input('password'));
 
-            $customer = Customer::query()->where('mobile',$request->input('mobile'))->first();
+              if (!$customer ||!Hash::check($request->input('password'),$password)){
 
+                  return response()->error('اطلاعات اشتباه وارد شده است',[],422);
 
-            $password = bcrypt($request->input('password'));
+              }
 
-            if (!$customer ||!Hash::check($request->input('password'),$password)){
+              $token = $customer->createToken('authToken');
+              Sanctum::actingAs($customer);
 
-                return response()->error('اطلاعات اشتباه وارد شده است',[],422);
+              $data = [
+                  'customer'=>$customer,
+                  'access_token'=>$token->plainTextToken,
+                  'token_type'=> 'Bearer'
 
-            }
-
-            $token = $customer->createToken('authToken');
-            Sanctum::actingAs($customer);
-
-            $data = [
-                'customer'=>$customer,
-                'access_token'=>$token->plainTextToken,
-                'token_type'=> 'Bearer'
-
-            ];
+              ];
 
 
 
 
-            return  response()->success('کاربر با موفقیت وارد شد',compact('data'));
+              return  response()->success('کاربر با موفقیت وارد شد',compact('data'));
+
+          }else{
+
+              return response()->error('اطلاعات اشتباه وارد شده است',[],422);
+
+          }
+
+
+
 
         }
 
@@ -217,8 +208,7 @@ class AuthController extends Controller
 
     public function logout(Request $request){
 
-        dd(Auth::user());
-        $customer = $request->user();
+        $customer = Auth::guard('customer-api')->user();
         $customer->currentAccessToken()->delete();
 
         return response()->success('کاربر با موفقیت خارج شد');

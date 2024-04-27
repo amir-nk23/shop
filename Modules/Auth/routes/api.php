@@ -15,10 +15,19 @@ use Modules\Auth\Http\Controllers\AuthController;
 */
 
 
+Route::prefix('customer')->middleware('guest')->group(function (){
 
-Route::post('customer/registerLogin',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'registerLogin']);
-Route::post('/smstoken',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'sendToken']);
-Route::post('/verify',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'verify']);
-Route::post('customer/register',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'register']);
-Route::post('customer/login',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'login']);
-Route::post('customer/logout',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'logout']);
+    Route::post('/registerLogin',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'registerLogin']);
+    Route::post('/smstoken',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'sendToken']);
+    Route::post('/verify',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'verify']);
+    Route::post('/register',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'register']);
+    Route::post('/login',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'login']);
+
+
+});
+
+Route::prefix('customer')->middleware('auth:customer-api')->group(function (){
+
+    Route::post('/logout',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'logout']);
+
+});

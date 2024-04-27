@@ -42,7 +42,7 @@ return [
         ],
         'customer-api' => [
             'driver' => 'sanctum',
-            'provider' => 'customer',
+            'provider' => 'customers',
             'hash'=>false,
         ],
     ],
