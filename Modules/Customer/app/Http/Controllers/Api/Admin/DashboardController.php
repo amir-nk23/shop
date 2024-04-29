@@ -1,20 +1,25 @@
 <?php
 
-namespace Modules\Customer\Http\Controllers\Api\Amdin;
+namespace Modules\Customer\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Customer\Models\Customer;
 
-class CustomerController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('customer::index');
+
+        $customer = Customer::query()->select(['name','mobile','email','national_code','status'])->get();
+
+        return \response()->success('اطلاعات مشتری',compact('customer'));
+
     }
 
     /**
@@ -60,8 +65,10 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Customer $customer)
     {
-        //
+
+        $customer->delete();
+
     }
 }

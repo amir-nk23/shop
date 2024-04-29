@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Customer\Http\Controllers\CustomerController;
+use Modules\Customer\Http\Controllers\Api\Admin\CustomerController;
+use Modules\Customer\Http\Controllers\Api\Admin\DashboardController;
+
+
 
 /*
  *--------------------------------------------------------------------------
@@ -16,4 +19,24 @@ use Modules\Customer\Http\Controllers\CustomerController;
 
 
 
-//Route::post('customer/registerLogin',[\Modules\Customer\Http\Controllers\Api\Amdin\CustomerController::class,'registerLogin']);
+
+Route::prefix('dashboard/')->group(function (){
+
+    Route::resource('customer', DashboardController::class);
+
+});
+
+
+
+Route::prefix('customer/')->group(function (){
+
+
+    Route::get('addresses/{customer}',[CustomerController::class,'indexAddress']);
+    Route::post('addresses',[CustomerController::class,'indexStore']);
+    Route::get('profile/{id}',[CustomerController::class,'profile']);
+    Route::patch('profile/{customer}',[CustomerController::class,'updateProfile']);
+    Route::put('change-password',[CustomerController::class,'changePassword']);
+
+
+});
+

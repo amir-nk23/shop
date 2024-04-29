@@ -25,4 +25,10 @@ class Customer extends Authenticatable
 
     ];
 
+    public function addresses(){
+
+        return $this->hasMany(Addresses::class);
+
+    }
+
 }
