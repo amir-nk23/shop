@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Customer\Http\Controllers\Api\Admin\CustomerController;
+use Modules\Customer\Http\Controllers\Api\Customer\CustomerController;
 use Modules\Customer\Http\Controllers\Api\Admin\DashboardController;
 
 
