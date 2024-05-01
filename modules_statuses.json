@@ -8,5 +8,6 @@
     "Specification": true,
     "Store": true,
     "Auth": true,
-    "Customer": true
+    "Customer": true,
+    "Cart": true
 }

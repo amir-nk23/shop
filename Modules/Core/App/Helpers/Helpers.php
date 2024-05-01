@@ -7,7 +7,9 @@ use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
+use Modules\Product\Models\Product;
 use Modules\Setting\App\Models\Setting;
+use Modules\Store\Models\Store;
 
 class Helpers
 {
@@ -96,6 +98,22 @@ class Helpers
         });
 
         return $settings[$name] ?? $default;
+    }
+
+    public static function quantityCheck($id,$quantity)
+    {
+       $stores =  Store::query()->where('product_id',$id)->get();
+
+        foreach($stores as $store){
+
+            if ($store->balance < $quantity){
+
+                return response()->error('تعداد محصوله سبد خرید از تعداد موجودیت انبار بیشتر می باشد');
+
+            }
+
+        }
+
     }
 }
 
