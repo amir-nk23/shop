@@ -102,6 +102,7 @@ class Helpers
 
     public static function quantityCheck($id,$quantity)
     {
+
        $stores =  Store::query()->where('product_id',$id)->get();
 
         foreach($stores as $store){
@@ -114,6 +115,39 @@ class Helpers
 
         }
 
+        return true;
+
     }
+
+    public static function discountCheck($id){
+
+            $product = Product::find($id);
+
+            $price = $product->price;
+
+            if ($product->discount !=null){
+
+                $price = $product->price * $product->discount;
+            }
+
+
+
+            return $price;
+
+    }
+
+//    public static function checkQuantityindex($carts){
+//
+//        $carts->each(function ($cart){
+//
+//            if ($cart->quantity> $cart->product);
+//
+//
+//        });
+//
+//
+//
+//
+//    }
 }
 

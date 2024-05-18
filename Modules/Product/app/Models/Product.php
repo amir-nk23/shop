@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\UploadedFile;
+use Modules\Cart\Models\Cart;
 use Modules\Specification\Models\Specification;
 use Modules\Store\Models\Store;
 use Spatie\MediaLibrary\HasMedia;
@@ -28,7 +29,6 @@ class Product extends Model implements HasMedia
         'discount',
         'price',
         'quantity',
-
 
     ];
 
@@ -72,6 +72,7 @@ class Product extends Model implements HasMedia
 //        $this->addMediaCollection('product_galleries');
 //    }
 
+
     protected function image(): Attribute
     {
         $media = $this->getFirstMedia('product_images');
@@ -107,15 +108,16 @@ class Product extends Model implements HasMedia
 
     public function uplaodProductFile(\Illuminate\Http\Request $request){
 
+
         if ($request->hasFile('image') && $request->file('image')->isValid())
         {
+
 
             $this->addImage($request->file('image'));
 
         }
 
         foreach ($request->file('images') as $image){
-
 
             $this->addGallery($image);
 
@@ -138,5 +140,13 @@ class Product extends Model implements HasMedia
         return $this->addMedia($file)->toMediaCollection('product_galleries');
     }
     //End media-library
+
+    public function carts(): HasMany
+    {
+
+        return $this->hasMany(Cart::class);
+
+
+    }
 
 }

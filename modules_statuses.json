@@ -4,6 +4,7 @@
     "Model": true,
     "Product": true,
     "Setting": true,
+    "Area": true,
     "Slider": true,
     "Specification": true,
     "Store": true,

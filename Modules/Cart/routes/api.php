@@ -17,6 +17,7 @@ use Modules\Cart\Http\Controllers\Api\Customer\CartController;
 
 Route::prefix('customer/')->group(function (){
 
-    Route::resource('cart', CartController::class);
+    Route::post('cart', [CartController::class,'store']);
+    Route::get('cart/{id}', [CartController::class,'index']);
 
 });
