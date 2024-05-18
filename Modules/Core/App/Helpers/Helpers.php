@@ -2,6 +2,7 @@
 
 namespace Modules\Core\App\Helpers;
 
+use Dflydev\DotAccessData\Data;
 use Exception;
 use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -105,17 +106,21 @@ class Helpers
 
        $stores =  Store::query()->where('product_id',$id)->get();
 
+
         foreach($stores as $store){
+
 
             if ($store->balance < $quantity){
 
+
                 return response()->error('تعداد محصوله سبد خرید از تعداد موجودیت انبار بیشتر می باشد');
+
 
             }
 
         }
 
-        return true;
+
 
     }
 
@@ -136,18 +141,28 @@ class Helpers
 
     }
 
-//    public static function checkQuantityindex($carts){
-//
-//        $carts->each(function ($cart){
-//
-//            if ($cart->quantity> $cart->product);
-//
-//
-//        });
-//
-//
-//
-//
-//    }
+    public static function checkQuantityindex($carts){
+
+
+
+
+        $carts->each(function ($cart){
+
+            $store = Store::query()->where('product_id',$cart->product_id)->first();
+
+
+            if ($cart->quantity> $store->quantity){
+
+                $cart->pull();
+
+            };
+
+
+        });
+
+
+        return $carts;
+
+    }
 }
 

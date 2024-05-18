@@ -10,6 +10,7 @@ use Modules\Cart\Http\Requests\CartStoreRequest;
 use Modules\Cart\Models\Cart;
 use Modules\Core\App\Helpers\Helpers;
 use Modules\Product\Models\Product;
+use Modules\Store\Models\Store;
 
 class CartController extends Controller
 {
@@ -20,11 +21,12 @@ class CartController extends Controller
     {
 
 
-        $carts = Cart::query()->where('customer_id',$id)->select('id','price','quantity')->with('product')->get();
+        $carts = Cart::query()->where('customer_id',$id)->select('id','price','quantity','product_id')->with('product')->get();
 
         dd($carts);
-        Helpers::checkQuantityindex($carts);
+     $carts =   Helpers::checkQuantityindex($carts);
 
+        dd($carts);
         return \response()->success('اطلاعات سبد خرید',compact('carts'));
 
     }
@@ -38,7 +40,24 @@ class CartController extends Controller
 
         $product = Product::query()->where('id',$request->product_id);
 
-        Helpers::quantityCheck($request->product_id,$request->quantity);
+//        Helpers::quantityCheck($request->product_id,$request->quantity);
+
+        $stores =  Store::query()->where('product_id',$request->product_id)->get();
+
+
+        foreach($stores as $store){
+
+
+            if ($store->balance < $request->quantity){
+
+
+                return response()->error('تعداد محصوله سبد خرید از تعداد موجودیت انبار بیشتر می باشد');
+
+
+            }
+
+        }
+
       $price =  Helpers::discountCheck($request->product_id);
 
 
