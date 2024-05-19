@@ -23,10 +23,9 @@ class CartController extends Controller
 
         $carts = Cart::query()->where('customer_id',$id)->select('id','price','quantity','product_id')->with('product')->get();
 
-        dd($carts);
      $carts =   Helpers::checkQuantityindex($carts);
 
-        dd($carts);
+
         return \response()->success('اطلاعات سبد خرید',compact('carts'));
 
     }

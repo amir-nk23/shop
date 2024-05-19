@@ -10,5 +10,7 @@
     "Store": true,
     "Auth": true,
     "Customer": true,
-    "Cart": true
+    "Cart": true,
+    "Home": true,
+    "Order": true
 }

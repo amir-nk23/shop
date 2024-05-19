@@ -20,11 +20,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('categories')
                 ->onDelete('no action');
-//            $table->foreignId('cart_id')
-//                ->nullable()
-//                ->references('id')
-//                ->on('carts')
-//                ->onDelete('no action');
             $table->text('description');
             $table->enum('status',['draft','available','unavailable']);
             $table->enum('discount_type',['percent','flat'])->nullable();

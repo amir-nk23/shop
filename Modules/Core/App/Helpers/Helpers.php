@@ -144,22 +144,45 @@ class Helpers
     public static function checkQuantityindex($carts){
 
 
+        $notification = [];
 
-
-        $carts->each(function ($cart){
+        foreach ($carts as $cart){
 
             $store = Store::query()->where('product_id',$cart->product_id)->first();
 
+            $product = Product::query()->where('id',$cart->product_id)->first();
 
-            if ($cart->quantity> $store->quantity){
+            if ($cart->quantity > $store->balance){
 
-                $cart->pull();
+
+                $notification['cart quantity delete'][$cart->id]='این جنس از سبد خرید حذف شد';
+
+
+
+                $cart->delete($cart->id);
+
 
             };
 
+            if ($product->price != $cart->price)
+            {
 
-        });
+                $notification['cart price update'][$cart->id]='مبلغ جنس اپدیت شد';
 
+                    $cart->update([
+
+                        'price'=>$product->price,
+
+                    ]);
+
+            }
+
+
+        }
+
+
+
+        $carts->put('notification',$notification);
 
         return $carts;
 

@@ -20,6 +20,8 @@ class Store extends Model
         'balance',
     ];
 
+    protected $table = 'stores';
+
     public function product(){
 
         $this->belongsTo(Product::class);
