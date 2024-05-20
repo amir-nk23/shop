@@ -12,5 +12,6 @@
     "Customer": true,
     "Cart": true,
     "Home": true,
-    "Order": true
+    "Order": true,
+    "Test": true
 }

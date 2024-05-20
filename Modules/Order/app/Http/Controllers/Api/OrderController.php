@@ -49,7 +49,7 @@ class OrderController extends Controller
           $order =  Order::query()->create([
 
                 'customer_id'=>$request->customer_id,
-                'address'=>$address,
+                'address'=>$address->tojson(),
                 'address_id'=> $addressId->id,
                 'amount'=>$request->amount,
                 'description'=>$request->description,

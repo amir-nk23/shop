@@ -141,7 +141,7 @@ class Helpers
 
     }
 
-    public static function checkQuantityindex($carts){
+    public static function checkQuantityIndex($carts){
 
 
         $notification = [];

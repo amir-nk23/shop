@@ -4,6 +4,7 @@ namespace Modules\Product\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Modules\Core\App\Helpers\Helpers;
 
 class ProductStoreRequest extends FormRequest
 {
@@ -12,9 +13,10 @@ class ProductStoreRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'image'=>'mimes:jpeg,jpg,png,gif|required|max:10000',
-            'title'=>'required|max:191|string',
+            'title'=>'required|max:191|string|unique',
             'category_id'=>'required|exists:categories,id',
             'description'=>'required|string',
             'status'=>'required|in:available,unavailable,draft',
@@ -33,6 +35,12 @@ class ProductStoreRequest extends FormRequest
 
     protected function passedValidation()
     {
+
+        if ($this->input('discount_type')=='percent' && $this->input('percent')>100){
+
+            throw Helpers::makeValidationException('هنگامی که نوع تخفیف درصد است مقدار تخفیف نباید بیشتر از صد باشد');
+
+        }
 
     }
 }
