@@ -13,5 +13,9 @@
     "Cart": true,
     "Home": true,
     "Order": true,
-    "Test": true
+    "Test": true,
+    "Payment": true,
+    "Invoice": true,
+    "Migration": true,
+    "CreateInvoiceTable": true
 }
