@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Modules\Customer\Models\Address;
 use Modules\Customer\Models\Addresses;
 use Modules\Customer\Models\Customer;
 
@@ -41,7 +42,7 @@ class CustomerController extends Controller
 
         } else {
 
-            $address = Addresses::query()->create($request->only(['customer_id','name','mobile','city_id','address','postal_code']));
+            $address = Address::query()->create($request->only(['customer_id','name','mobile','city_id','address','postal_code']));
 
 
             return \response()->success('ثبت ادرس مشتری', compact('address'));

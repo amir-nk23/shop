@@ -31,4 +31,11 @@ class Customer extends Authenticatable
 
     }
 
+    public function totalPriceForCart(){
+
+    dd($this->id);
+
+
+    }
+
 }

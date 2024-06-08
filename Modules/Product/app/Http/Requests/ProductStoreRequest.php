@@ -16,7 +16,7 @@ class ProductStoreRequest extends FormRequest
 
         return [
             'image'=>'mimes:jpeg,jpg,png,gif|required|max:10000',
-            'title'=>'required|max:191|string|unique',
+            'title'=>'required|max:191|string|unique:products,title',
             'category_id'=>'required|exists:categories,id',
             'description'=>'required|string',
             'status'=>'required|in:available,unavailable,draft',

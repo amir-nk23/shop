@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Customer\Http\Controllers\AddressController;
 use Modules\Customer\Http\Controllers\Api\Customer\CustomerController;
 use Modules\Customer\Http\Controllers\Api\Admin\DashboardController;
 
@@ -32,6 +33,7 @@ Route::prefix('customer/')->group(function (){
 
 
     Route::get('addresses/{customer}',[CustomerController::class,'indexAddress']);
+    Route::post('address',[AddressController::class,'store']);
     Route::post('addresses',[CustomerController::class,'indexStore']);
     Route::get('profile/{id}',[CustomerController::class,'profile']);
     Route::patch('profile/{customer}',[CustomerController::class,'updateProfile']);

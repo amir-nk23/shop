@@ -14,6 +14,17 @@ use Modules\Order\Http\Controllers\OrderController;
  *
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+Route::group([],function () {
+
     Route::apiResource('order', OrderController::class)->names('order');
+
+    Route::prefix('customer')->group(function (){
+        Route::post('/purchase', [\Modules\Order\Http\Controllers\Api\Customer\OrderController::class,'purchase'])->name('payments.parchase');
+        Route::get('/orders', [OrderController::class,'index']);
+        Route::get('/orders/{order}', [OrderController::class,'show']);
+
+
+    });
+
+
 });
