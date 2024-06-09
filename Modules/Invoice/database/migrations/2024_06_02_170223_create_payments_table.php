@@ -19,10 +19,10 @@ return new class extends Migration
                 ->on('invoices')
                 ->onDelete('no action');
             $table->unsignedBigInteger('amount');
-            $table->string('driver');
+//            $table->string('driver');
             $table->string('tracking_code')->nullable();
             $table->text('description')->nullable();
-            $table->string('token');
+//            $table->string('token');
             $table->boolean('status');
             $table->timestamps();
         });

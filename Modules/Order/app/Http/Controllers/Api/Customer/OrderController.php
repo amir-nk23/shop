@@ -46,32 +46,53 @@ class OrderController extends Controller
         try {
 
             $address = Address::findOrFail($request->address_id);
-            $customer = Customer::findOrFail($request->address_id)->user()->id;
+
+             $addressId = $request->address_id;
+
+            $customer = Customer::query()->whereHas('addresses',function ($query) use ($addressId){
+
+               $query->where('id',$addressId);
+
+            })->first();
+
 
 
             $order = Order::query()->create([
                 'address_id' => $address->id,
-                'address' => $address->toJson(),
+                'address' => $address,
                 'amount' => $customer->totalPriceForCart(),
                 'customer_id' => $customer->id,
                 'status' => 'wait_for_payment'
             ]);
 
-            Event::dispatch(new CreateOrders($order));
-            $driver = $request->input('driver_name');
-            $route = route('payments.verify',$driver);
+
+
+//            Event::dispatch(new CreateOrders($order));
+
+//            $driver = $request->input('driver_name');
+//            $route = route('payments.verify',$driver);
+
 
             $invoice = Invoice::query()->create([
                 'order_id' => $order->id,
                 'amount' => $order->amount,
                 'status' => 0
             ]);
+
+
+
+
+
             $payment = Payment::query()->create([
                 'invoice_id' => $invoice->id,
-                'amount' => $order->amount,
-                'driver' => $driver,
+                'amount' => intval($order->amount),
+//                'driver' => $driver,
                 'status' => 0
             ]);
+
+
+
+            return \response()->success('سبد خرید با موفقیت ثبت شد');
 
 
 

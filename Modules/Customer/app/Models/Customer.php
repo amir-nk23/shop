@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Modules\Cart\Models\Cart;
 
 class Customer extends Authenticatable
 {
@@ -27,15 +28,20 @@ class Customer extends Authenticatable
 
     public function addresses(){
 
-        return $this->hasMany(Addresses::class,'customer_id');
+        return $this->hasMany(Address::class,'customer_id');
 
     }
 
     public function totalPriceForCart(){
 
-    dd($this->id);
+        return $this->carts()->sum('price');
 
 
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
     }
 
 }

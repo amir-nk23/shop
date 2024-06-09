@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('customer_id')
                 ->references('id')
                 ->on('customers')
-                ->onDelete('no action');
+                ->onDelete('no action')->onUpdate('no action');
             $table->unsignedBigInteger('address_id');
             $table->foreign('address_id')
                 ->references('id')
