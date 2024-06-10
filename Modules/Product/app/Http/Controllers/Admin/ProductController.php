@@ -28,6 +28,7 @@ class ProductController extends Controller
 
     public function store(ProductStoreRequest $request)
     {
+
         $product = Product::query()->create($request->only('title', 'category_id', 'description', 'status', 'price', 'quantity'));
 
         $product->uplaodProductFile($request);

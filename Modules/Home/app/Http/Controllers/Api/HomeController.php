@@ -6,62 +6,46 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Modules\Product\Models\Product;
+use Modules\Slider\Models\Slider;
 
 class HomeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        return view('home::index');
+
+    public function home(){
+
+        $sliders = Slider::query()->where('status',1)->select('id','link','status')->latest('id')->take('4')->get();
+
+        $lastProducts = Product::query()
+            ->select('id', 'title', 'discount', 'discount_type', 'price')
+            ->latest('id')
+            ->take(10)
+            ->get();
+
+
+        $mostDiscountProducts = Product::query()->orderByDesc('discount')->take('10')->get();
+
+        $mostViewedProducts  = Product::orderByViews()->take(10)->get();
+
+        $mostReapetedproduct = DB::table('order_items')
+            ->select('product_id', DB::raw('count(*) as product_count'))
+            ->groupBy('product_id')
+            ->orderBy('product_count', 'desc')
+            ->take('10')->get();
+
+            $productId = $mostReapetedproduct->pluck('product_id');
+
+
+        $mostSelledProduct = Product::query()->whereIn('id',$productId)->get();
+
+
+
+        return response()->success('',compact('sliders','lastProducts','mostDiscountProducts','mostViewedProducts','mostSelledProduct'));
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('home::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('home::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('home::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

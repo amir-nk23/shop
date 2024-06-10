@@ -2,10 +2,13 @@
 
 namespace Modules\Product\Models;
 
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
+use CyrildeWit\EloquentViewable\InteractsWithViews;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Modules\Cart\Models\Cart;
 use Modules\Specification\Models\Specification;
 use Modules\Store\Models\Store;
@@ -13,9 +16,9 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Sluggable\SlugOptions;
 
-class Product extends Model implements HasMedia
+class Product extends Model implements HasMedia,Viewable
 {
-    use HasFactory,InteractsWithMedia;
+    use HasFactory,InteractsWithMedia,InteractsWithViews;
 
     /**
      * The attributes that are mass assignable.
@@ -39,6 +42,14 @@ class Product extends Model implements HasMedia
             ->usingLanguage('')
             ->saveSlugsTo('slug')
             ->slugsShouldBeNoLongerThan(190);
+    }
+
+
+    public static function getTopDiscountedProducts()
+    {
+        $topDiscountedProducts = DB::select("select `id`, `title`,`status`,`price`, IF( `discount_type` = 'percent', (`discount`/100) * `price`, `discount`) AS `total_discount` FROM `products`  WHERE `status` = 'available' ORDER BY `total_discount` DESC LIMIT 10;");
+
+        return $topDiscountedProducts;
     }
 
     public function category(){

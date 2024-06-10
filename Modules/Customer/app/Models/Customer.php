@@ -34,7 +34,23 @@ class Customer extends Authenticatable
 
     public function totalPriceForCart(){
 
-        return $this->carts()->sum('price');
+        $carts = $this->carts()->get();
+
+        $sum = 0;
+
+
+
+        foreach ($carts as $cart){
+
+           $total = $cart->quantity * $cart->price;
+
+           $sum +=$total;
+        }
+
+
+
+
+        return $sum;
 
 
     }

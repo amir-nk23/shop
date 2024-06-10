@@ -14,6 +14,9 @@ use Modules\Home\Http\Controllers\HomeController;
  *
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('home', HomeController::class)->names('home');
+
+Route::prefix('front/')->group(function (){
+
+    Route::get('home', [\Modules\Home\Http\Controllers\Api\HomeController::class,'home']);
+
 });
