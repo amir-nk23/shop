@@ -19,4 +19,11 @@ use Modules\Product\Http\Controllers\ProductController;
 
 Route::resource('product',\Modules\Product\Http\Controllers\Admin\ProductController::class);
 
+Route::prefix('front/')->group(function (){
+
+    Route::get('product',[\Modules\Product\Http\Controllers\Api\Front\ProductController::class,'index']);
+    Route::get('product/1',[\Modules\Product\Http\Controllers\Api\Front\ProductController::class,'show']);
+
+});
+
 Route::resource('category',CategoryController::class);

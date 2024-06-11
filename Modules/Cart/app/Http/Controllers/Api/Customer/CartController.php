@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Modules\Cart\Http\Requests\CartStoreRequest;
 use Modules\Cart\Models\Cart;
 use Modules\Core\App\Helpers\Helpers;
@@ -17,11 +18,13 @@ class CartController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($id)
+    public function index()
     {
 
 
-        $carts = Cart::query()->where('customer_id',$id)->select('id','price','quantity','product_id')->with('product')->get();
+        $customerId = Auth::guard('customer-api')->user()->id;
+
+        $carts = Cart::query()->where('customer_id',$customerId)->select('id','price','quantity','product_id')->with('product')->get();
 
      $carts =   Helpers::checkQuantityIndex($carts);
 

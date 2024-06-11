@@ -29,6 +29,7 @@ class ProductController extends Controller
     public function store(ProductStoreRequest $request)
     {
 
+
         $product = Product::query()->create($request->only('title', 'category_id', 'description', 'status', 'price', 'quantity'));
 
         $product->uplaodProductFile($request);
@@ -64,7 +65,10 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
 
+
         $product->update($request->only('title', 'category_id', 'description', 'status', 'price', 'quantity'));
+
+
 
         if ($request->hasFile('images') || $request->hasFile('image')) {
 
@@ -72,11 +76,57 @@ class ProductController extends Controller
 
         }
 
-        $i = 0;
-        for ($i; $i < count($request->spec_id); $i++) {
+        $store = \Modules\Store\Models\Store::query()->where('product_id',$product->id)->first();
 
-            $product->specifications()->sync($request->spec_id[$i], ['value' => $request->value[$i]]);
+
+        if($store->balance < $request->quantity){
+
+        $store->update([
+
+            'balance'=>$request->quantity,
+            'product_id'=>$request->product_id
+
+        ]);
+            StoreTransaction::query()->create([
+                'store_id' => $store->id,
+                'type' => 'increment',
+                'quantity' => $request->quantity,
+                'description' => $request->quantity . 'افزایش موجودی به تعداد'
+
+            ]);
+
+        }else{
+
+            $TransactionQuantity = $store->balance - $request->quantity;
+
+            $store->update([
+
+                'balance'=>$request->quantity,
+                'product_id'=>$request->product_id
+
+            ]);
+            StoreTransaction::query()->create([
+                'store_id' => $store->id,
+                'type' => 'increment',
+                'quantity' => $request->quantity,
+                'description' => $TransactionQuantity . 'کاهش موجودی به تعداد'
+
+            ]);
+
+
         }
+
+
+
+        $i = 0;
+
+        if (filled($request->spec_id)){
+            for ($i; $i < count($request->spec_id); $i++) {
+
+                $product->specifications()->sync($request->spec_id[$i], ['value' => $request->value[$i]]);
+            }
+        }
+
         return \response()->success('عملیات با موفقیت انجام شد', compact('product'));
 
     }
@@ -88,7 +138,20 @@ class ProductController extends Controller
     {
         //todo: check delete conditions
 
-        $product->delete();
-        return \response()->success('عملیات با موفقیت انجام شد');
+        if ($product->status == 'unavailable' && $product->quantity == 0){
+
+            $product->delete();
+
+            return \response()->success('عملیات با موفقیت انجام شد');
+
+        }else{
+
+            return \response()->error('عملیات حذف به دلیل موجودیت محصول با مشکل مواجه شد',compact([]),404);
+
+
+        }
+
+
+
     }
 }

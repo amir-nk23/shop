@@ -26,8 +26,22 @@ Route::prefix('customer')->middleware('guest')->group(function (){
 
 });
 
+Route::prefix('admin')->middleware('guest')->group(function (){
+
+    Route::post('/login',[\Modules\Auth\Http\Controllers\Api\Admin\AuthController::class,'login']);
+
+
+});
+
 Route::prefix('customer')->middleware('auth:customer-api')->group(function (){
 
     Route::post('/logout',[\Modules\Auth\Http\Controllers\Api\Customer\AuthController::class,'logout']);
+
+});
+
+
+Route::prefix('admin')->middleware('auth:admin-api')->group(function (){
+
+    Route::post('/logout',[\Modules\Auth\Http\Controllers\Api\Admin\AuthController::class,'logout']);
 
 });

@@ -14,7 +14,7 @@ use Modules\Order\Http\Controllers\OrderController;
  *
 */
 
-Route::group([],function () {
+Route::middleware('auth:customer-api')->group(function () {
 
     Route::apiResource('order', OrderController::class)->names('order');
 

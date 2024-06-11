@@ -23,6 +23,14 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
 
+        $request->validate([
+
+            'parent_id'=>'nullable|exists:categories,id',
+            'featured'=>'boolean',
+            'status'=>'boolean',
+            'name'=>'unique:categories,name',
+        ]);
+
        $category = Category::query()->create([
 
            'name'=>$request->name,
@@ -69,6 +77,58 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
+
+
+        if ($category->parent_id == null){
+
+
+            if(count($category->children) == 0){
+
+
+
+                if (count($category->products)==0){
+
+
+                    $category->delete();
+
+                    return \response()->success('دسته حذف شد');
+
+                }else{
+
+                    return \response()->error('دسته دارای محصول می باشد');
+
+                }
+
+            }else{
+
+                return \response()->error('دسته ی خواهان حذف شما سردسته است لطفا ابتدا زیر  دسته ها را حذف نمایید');
+
+
+            }
+
+
+        }else{
+
+
+            if (count($category->products)==0){
+
+
+                $category->delete();
+
+                return \response()->success('دسته حذف شد');
+
+            }else{
+
+                return \response()->error('دسته دارای محصول می باشد');
+
+            }
+
+
+        }
+
+
+
+
+
     }
 }

@@ -15,9 +15,16 @@ use Modules\Cart\Http\Controllers\Api\Customer\CartController;
  *
 */
 
-Route::prefix('customer/')->group(function (){
+Route::middleware('auth:customer-api')->prefix('customer/')->group(function (){
+
 
     Route::post('cart', [CartController::class,'store']);
-    Route::get('cart/{id}', [CartController::class,'index']);
+    Route::get('cart', [CartController::class,'index']);
+
+});
+
+Route::middleware('auth:admin-api')->prefix('admin/')->group(function (){
+
+    Route::get('cart/{id}', [\Modules\Cart\Http\Controllers\Api\Admin\CartController::class,'show']);
 
 });

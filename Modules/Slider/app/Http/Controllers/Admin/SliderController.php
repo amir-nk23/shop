@@ -30,6 +30,14 @@ class SliderController extends Controller
     public function store(Request $request)
     {
 
+        dd('hi');
+        $request->validate([
+
+            'title'=>'required',
+            'link'=>'required|url:http,https',
+            'status'=>'required|boolean'
+
+        ]);
 
 
         $slider = Slider::query()->create($request->only('title','link','status'));
@@ -37,7 +45,7 @@ class SliderController extends Controller
         $slider->uploadFile($request);
 
 //        return \response()->success(':>',compact('slider'));
-        return \response()->success(':>');
+        return \response()->success(':>',compact('slider'));
 
     }
 

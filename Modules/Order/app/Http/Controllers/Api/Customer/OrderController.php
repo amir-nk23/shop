@@ -44,6 +44,11 @@ class OrderController extends Controller
     public function purchase(Request $request)
     {
 
+        $validate = $request->validate([
+            'address_id'=>'required|exists:addresses,id'
+        ]);
+
+
 
         try {
 

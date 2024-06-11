@@ -45,6 +45,11 @@ return [
             'provider' => 'customers',
             'hash'=>false,
         ],
+        'admin-api' => [
+            'driver' => 'sanctum',
+            'provider' => 'admins',
+            'hash'=>false,
+        ],
     ],
 
     /*
@@ -73,6 +78,10 @@ return [
         'customers' => [
             'driver' => 'eloquent',
             'model' => \Modules\Customer\Models\Customer::class,
+        ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => \Modules\Admin\Models\Admin::class,
         ],
     ],
 

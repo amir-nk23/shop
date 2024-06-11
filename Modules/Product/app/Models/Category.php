@@ -28,7 +28,7 @@ class Category extends Model
         //return CategoryFactory::new();
     }
 
-    public function parent()
+    public function children()
     {
 
         return $this->hasMany(Category::class,'parent_id');
@@ -37,11 +37,13 @@ class Category extends Model
 
     public function recursiveChildren(){
 
-        $this->parent()->with('children');
+
+
+      return  $this->children()->with('parent');
 
     }
 
-    public function children(){
+    public function parent(){
 
         return $this->belongsTo(Category::class,'parent_id');
 
@@ -51,6 +53,12 @@ class Category extends Model
     {
 
         return $this->belongsToMany(Specification::class,'category_specification');
+
+    }
+
+    public function products(){
+
+        return $this->hasMany(Product::class);
 
     }
 }

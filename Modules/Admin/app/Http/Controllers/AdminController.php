@@ -7,6 +7,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
+use Modules\Admin\Http\Requests\AdminStoreRequest;
+use Modules\Admin\Http\Requests\AdminUpdateRequest;
 use Modules\Admin\Models\Admin;
 
 class AdminController extends Controller
@@ -43,7 +45,7 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AdminStoreRequest $request)
     {
 
         try {
@@ -53,7 +55,7 @@ class AdminController extends Controller
                 'name'=>$request->name,
                 'email'=>$request->email,
                 'mobile'=>$request->mobile,
-                'password'=>$request->password,
+                'password'=>bcrypt($request->password),
             ]);
 
             return \response()->success(':)',compact('admin'));
@@ -80,8 +82,9 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(AdminUpdateRequest $request, $id)
     {
+
 
         try {
             $admin=Admin::find($id);
@@ -91,8 +94,9 @@ class AdminController extends Controller
                 'name'=>$request->name,
                 'email'=>$request->email,
                 'mobile'=>$request->mobile,
-                'password'=>$request->password,
+                'password'=>bcrypt($request->password),
             ]);
+            return \response()->success(':)',compact('admin'));
         }catch (\Exception $e){
 
             return \response()->error('سایت با مشکل مواجه شده است');
@@ -104,8 +108,11 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Admin $admin)
     {
-        //
+
+        $admin->delete();
+
+        return \response()->success('ادمین با موفقیت حذف شد',compact('admin'));
     }
 }
