@@ -22,7 +22,8 @@ Route::resource('product',\Modules\Product\Http\Controllers\Admin\ProductControl
 Route::prefix('front/')->group(function (){
 
     Route::get('product',[\Modules\Product\Http\Controllers\Api\Front\ProductController::class,'index']);
-    Route::get('product/1',[\Modules\Product\Http\Controllers\Api\Front\ProductController::class,'show']);
+    Route::get('product/{id}',[\Modules\Product\Http\Controllers\Api\Front\ProductController::class,'show']);
+    Route::get('category',[\Modules\Product\Http\Controllers\Api\Front\CategoryController::class,'index']);
 
 });
 
